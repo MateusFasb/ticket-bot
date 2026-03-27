@@ -1,6 +1,6 @@
 {
-  "token": "",
-  "mongo_uri": "",
+  "token": "process.env.TOKEN",
+  "mongo_uri": "process.env.MONGO_URI",
   "cargo_mod": "1486916184975868055",
   "categoria_tickets": "1486916082236395550",
   "categoria_logs": "1486916571279392848",

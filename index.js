@@ -23,4 +23,4 @@ fs.readdirSync("./events").forEach(file => {
 // conectar banco
 connectMongo();
 
-client.login(config.token);
+client.login(process.env.TOKEN);
