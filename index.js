@@ -49,5 +49,3 @@ client.on("warn", (info) => {
 client.login(process.env.TOKEN)
   .then(() => console.log("Login no Discord enviado"))
   .catch((err) => console.error("Erro ao logar no Discord:", err));
-
-client.login(process.env.TOKEN);

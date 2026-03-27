@@ -1,7 +1,7 @@
 const { verificarTickets } = require("../utils/ticketManager");
 
 module.exports = (client) => {
-  client.once("ready", () => {
+  client.once("clientReady", () => {
     console.log(`Online: ${client.user.tag}`);
 
     setInterval(() => {
