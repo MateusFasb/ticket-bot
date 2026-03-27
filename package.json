@@ -1,0 +1,9 @@
+{
+  "name": "ticket-bot",
+  "version": "1.0.0",
+  "dependencies": {
+    "discord.js": "^14.14.1",
+    "mongoose": "^8.0.0",
+    "discord-html-transcripts": "^3.0.0"
+  }
+}
