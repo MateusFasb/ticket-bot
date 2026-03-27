@@ -9,3 +9,9 @@ module.exports = (client) => {
     }, 60000);
   });
 };
+
+module.exports = (client) => {
+  client.once("ready", () => {
+    console.log(`Online: ${client.user.tag}`);
+  });
+};
