@@ -30,4 +30,24 @@ fs.readdirSync("./events").forEach(file => {
 
 connectMongo();
 
+client.on("ready", () => {
+  console.log(`Online: ${client.user.tag}`);
+});
+
+client.on("error", (err) => {
+  console.error("Erro do client:", err);
+});
+
+client.on("shardError", (err) => {
+  console.error("Erro de shard:", err);
+});
+
+client.on("warn", (info) => {
+  console.warn("Aviso:", info);
+});
+
+client.login(process.env.TOKEN)
+  .then(() => console.log("Login no Discord enviado"))
+  .catch((err) => console.error("Erro ao logar no Discord:", err));
+
 client.login(process.env.TOKEN);
