@@ -129,3 +129,6 @@ client.login(process.env.TOKEN)
   console.log(`Bot ID: ${client.user.id}`);
   console.log(`Application ID: ${client.application.id}`);
 });
+
+console.log("TOKEN existe?", !!process.env.TOKEN);
+console.log("TOKEN tamanho:", process.env.TOKEN ? process.env.TOKEN.length : 0);
