@@ -14,6 +14,8 @@ module.exports = {
 
   async execute(interaction) {
     try {
+      console.log("Executando /setup-ticket para:", interaction.user.tag);
+
       if (!interaction.inGuild()) {
         return await interaction.reply({
           content: "Esse comando só pode ser usado em servidor.",
@@ -21,12 +23,13 @@ module.exports = {
         });
       }
 
+      await interaction.deferReply({ ephemeral: true });
+
       const member = await interaction.guild.members.fetch(interaction.user.id);
 
       if (!member.roles.cache.has(config.cargo_mod)) {
-        return await interaction.reply({
-          content: "Sem permissão.",
-          ephemeral: true
+        return await interaction.editReply({
+          content: "Sem permissão."
         });
       }
 
@@ -74,17 +77,15 @@ module.exports = {
         components: [row]
       });
 
-      await interaction.reply({
-        content: "Painel enviado.",
-        ephemeral: true
+      await interaction.editReply({
+        content: "Painel enviado."
       });
     } catch (err) {
       console.error("Erro no /setup-ticket:", err);
 
-      if (interaction.replied || interaction.deferred) {
-        await interaction.followUp({
-          content: "Erro ao executar o comando.",
-          ephemeral: true
+      if (interaction.deferred || interaction.replied) {
+        await interaction.editReply({
+          content: "Erro ao executar o comando."
         }).catch(() => {});
       } else {
         await interaction.reply({
