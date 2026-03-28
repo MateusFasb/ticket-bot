@@ -1,10 +1,9 @@
 const { Client, GatewayIntentBits, EmbedBuilder, ActionRowBuilder, StringSelectMenuBuilder } = require("discord.js");
 const http = require("http");
 
-const client = new Client({
-  intents: [GatewayIntentBits.Guilds]
-});
+console.log("Iniciando bot...");
 
+// HTTP (necessário pro Render)
 const PORT = process.env.PORT || 3000;
 
 http.createServer((req, res) => {
@@ -14,6 +13,12 @@ http.createServer((req, res) => {
   console.log(`Servidor HTTP rodando na porta ${PORT}`);
 });
 
+// Client Discord
+const client = new Client({
+  intents: [GatewayIntentBits.Guilds]
+});
+
+// Logs de erro (pra parar erro silencioso)
 process.on("unhandledRejection", (err) => {
   console.error("unhandledRejection:", err);
 });
@@ -22,16 +27,21 @@ process.on("uncaughtException", (err) => {
   console.error("uncaughtException:", err);
 });
 
+// Ready
 client.once("clientReady", () => {
   console.log(`Online: ${client.user.tag}`);
+  console.log(`Bot ID: ${client.user.id}`);
+  console.log(`Application ID: ${client.application.id}`);
 });
 
+// Slash + interação
 client.on("interactionCreate", async (interaction) => {
   try {
     console.log("interactionCreate recebido");
 
+    // COMANDO
     if (interaction.isChatInputCommand()) {
-      console.log("Comando recebido:", interaction.commandName);
+      console.log("Comando:", interaction.commandName);
 
       if (interaction.commandName === "setup-ticket") {
         await interaction.deferReply({ ephemeral: true });
@@ -58,18 +68,15 @@ client.on("interactionCreate", async (interaction) => {
           .addOptions([
             {
               label: "Dúvida geral",
-              value: "duvida",
-              description: "Abrir ticket de dúvida geral"
+              value: "duvida"
             },
             {
               label: "Sugestão",
-              value: "sugestao",
-              description: "Enviar uma sugestão"
+              value: "sugestao"
             },
             {
               label: "Denúncia de membro",
-              value: "denuncia",
-              description: "Denunciar um membro"
+              value: "denuncia"
             }
           ]);
 
@@ -84,51 +91,43 @@ client.on("interactionCreate", async (interaction) => {
           content: "Painel enviado."
         });
 
-        console.log("/setup-ticket executado com sucesso");
+        console.log("setup-ticket OK");
         return;
       }
     }
 
+    // SELECT MENU
     if (interaction.isStringSelectMenu()) {
-      console.log("Select menu recebido:", interaction.customId);
+      console.log("Select:", interaction.values[0]);
 
       if (interaction.customId === "ticket_select") {
         await interaction.reply({
-          content: `Você selecionou: ${interaction.values[0]}`,
+          content: `Selecionado: ${interaction.values[0]}`,
           ephemeral: true
         });
 
-        console.log("Select menu respondeu com sucesso");
         return;
       }
     }
+
   } catch (err) {
-    console.error("Erro em interactionCreate:", err);
+    console.error("Erro geral:", err);
 
     if (interaction.isRepliable()) {
       if (interaction.deferred) {
-        await interaction.editReply({
-          content: "Erro ao processar interação."
-        }).catch(() => {});
+        await interaction.editReply({ content: "Erro." }).catch(() => {});
       } else if (!interaction.replied) {
-        await interaction.reply({
-          content: "Erro ao processar interação.",
-          ephemeral: true
-        }).catch(() => {});
+        await interaction.reply({ content: "Erro.", ephemeral: true }).catch(() => {});
       }
     }
   }
 });
 
+// LOGIN (parte crítica)
+console.log("Antes do login...");
+
 client.login(process.env.TOKEN)
-  .then(() => console.log("Login no Discord enviado"))
-  .catch((err) => console.error("Erro ao logar no Discord:", err));
+  .then(() => console.log("Login enviado"))
+  .catch((err) => console.error("Erro login:", err));
 
-  client.once("clientReady", () => {
-  console.log(`Online: ${client.user.tag}`);
-  console.log(`Bot ID: ${client.user.id}`);
-  console.log(`Application ID: ${client.application.id}`);
-});
-
-console.log("TOKEN existe?", !!process.env.TOKEN);
-console.log("TOKEN tamanho:", process.env.TOKEN ? process.env.TOKEN.length : 0);
+console.log("Depois do login...");
