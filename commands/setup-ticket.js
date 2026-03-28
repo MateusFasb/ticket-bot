@@ -14,7 +14,7 @@ module.exports = {
 
   async execute(interaction) {
     try {
-      console.log("Executando /setup-ticket para:", interaction.user.tag);
+      console.log("Executando /setup-ticket:", interaction.user.tag);
 
       if (!interaction.inGuild()) {
         return await interaction.reply({

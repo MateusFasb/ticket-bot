@@ -46,6 +46,14 @@ client.on("warn", (info) => {
   console.warn("Aviso:", info);
 });
 
+  process.on("unhandledRejection", (err) => {
+  console.error("unhandledRejection:", err);
+});
+
+process.on("uncaughtException", (err) => {
+  console.error("uncaughtException:", err);
+});
+
 client.login(process.env.TOKEN)
   .then(() => console.log("Login no Discord enviado"))
   .catch((err) => console.error("Erro ao logar no Discord:", err));
