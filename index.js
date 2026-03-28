@@ -123,3 +123,9 @@ client.on("interactionCreate", async (interaction) => {
 client.login(process.env.TOKEN)
   .then(() => console.log("Login no Discord enviado"))
   .catch((err) => console.error("Erro ao logar no Discord:", err));
+
+  client.once("clientReady", () => {
+  console.log(`Online: ${client.user.tag}`);
+  console.log(`Bot ID: ${client.user.id}`);
+  console.log(`Application ID: ${client.application.id}`);
+});
